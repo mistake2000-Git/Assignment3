@@ -3,13 +3,19 @@
   "author": "Tan Loc",
   "version": "1.0.0",
   "description": "First Project",
-  "main": "index.js",
+  "main": "Server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "genAPIDoc": "apidoc -i ./app/route/ -o ,./public/docs/"
   },
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "nodemon": "^2.0.13"
+    "nodemon": "^2.0.13",
+    "method-override": "^2.3.8",
+    "body-parser": "^1.17.1"
+  },
+  "devDependencies": {
+    "apidoc": "^0.50.0"
   }
 }
