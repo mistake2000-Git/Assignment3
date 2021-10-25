@@ -1,33 +1,89 @@
 //third party components
 var express= require('express');
 var app= express();
+app.use(express.json());
 let BodyParser = require('body-parser');
 let MethodOverride = require('method-override');
 const path=require('path');
 const { application } = require('express');
 const { parse } = require('querystring');
+const { countReset } = require('console');
+const { runInNewContext } = require('vm');
 
 // our components
 app.listen(3000,()=>console.log('Server running in port 3000!'));
 
 const cities = [
-  {id:1, name:"Ben Tre"},
-  {id:2 ,name:" Sai Gon"}
+  {id:1, name:"Ben Tre"}, 
+  {id:2 ,name:"Ho Chi Minh"},
+  {id:3 ,name:"Da Nang"},
+  {id:4 ,name:"Ha Noi"},
+  {id:5 ,name:"Tien Giang"}
 ];
 
-/*app.get('/',(req,res)=>{
-    res.send('Hello World');
-});*/
-app.get('/',(req,res)=>{
-  res.send("Hello World");
-})
 
 
+// Query all city 
 app.get('/api',(req,res)=>{
-  res.send([1,2,3]);  
+  res.send(cities);  
 })
 
-app.get('/api/:id',(req,res)=>{
-  const city = cities.find(c=>c.id ===parseInt(req.params.id));
-  res.send(city)  ;
+//Query 1 city
+app.get('/api/:id/',(req,res)=>{
+  const city = cities.find(city=>city.id ===parseInt(req.params.id));
+  if(!city){ //can not found the city ID
+    res.status(404).send("The city not found!")
+  }
+  else
+  {
+    res.send(city);
+  }
+})
+
+//Add new city
+app.post('/api/',(req,res)=>{ 
+  if(!req.body|| req.body.name.length<2||cities.find(city=>city.name===req.body.name))
+  {
+    res.status(404).send("The city name is wrong or exist!")
+  }
+  else{
+    const newCity={
+      id:cities.length+1,
+      name:req.body.name
+    };
+    cities.push(newCity);
+    res.send(cities);
+  }
+})
+
+//Update exist city
+app.put('/api/',(req,res)=>{
+  if(!req.body || req.body.name.length<2 || cities.find(city=>city.name===req.body.name)||req.body.id>cities.length)
+  {
+    res.status(404).send("Can't not found the city ID or the name already exist! ");
+  }
+  else{
+    const id = req.body.id-1;
+    cities[id].name=req.body.name;
+    res.send(cities);
+  }
+})
+
+
+//Delete City
+app.delete('/api/',(req,res)=>{
+  if(!req.body || !cities.find(city=>city.name===req.body.name))
+  {
+    res.send("No exist the city to delete!");
+  }
+  else{
+    const city = cities.find(city=> city.name===req.body.name);
+    const index = cities.indexOf(city)
+    cities.splice(index,1);
+    for(let i = index;i<cities.length;i++)
+    {
+      cities[i].id--;
+    }
+    res.send(cities);
+  }
 })
