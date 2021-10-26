@@ -1,1 +1,1 @@
-wed: node ./Server.js
+web: node ./Server.js
