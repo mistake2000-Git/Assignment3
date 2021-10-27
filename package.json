@@ -5,6 +5,7 @@
   "description": "First Project",
   "main": "Server.js",
   "apidoc": {
+    "name":"Assignment3",
     "title": "Custom apiDoc browser title",
     "url": "https://localhost:3000/api",
     "sampleUrl": true
