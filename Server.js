@@ -14,6 +14,8 @@ const { runInNewContext } = require('vm');
 const PORT=process.env.PORT || 3000;
 app.listen(PORT,()=>console.log('Server running in port 3000!'));
 
+
+
 const cities = [
   {id:1, name:"Ben Tre"}, 
   {id:2 ,name:"Ho Chi Minh"},
@@ -23,10 +25,20 @@ const cities = [
 ];
 
 
+app.use('/docs',express.static('./Public/docs'))
+
+app.get('/docs',(req,res)=>{
+  res.sendFile(__dirname+'/Public/docs/index.html');
+})
+
 
 // Query all city 
 app.get('/api',(req,res)=>{
-  res.send(cities);  
+  if(!cities)
+  {
+    res.status(404).send("The Cities list is empty!");
+  }
+    res.send(cities);  
 })
 
 //Query 1 city
@@ -88,7 +100,6 @@ app.delete('/api/',(req,res)=>{
     res.send(cities);
   }
 })
-
 
 
 
