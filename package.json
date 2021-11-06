@@ -6,7 +6,8 @@
   "main": "Server.js",
   "apidoc": {
     "name":"Assignment3",
-    "title": "Custom apiDoc browser title",
+    "version": "1.0.0",
+    "title": "Assignment 3 API",
     "url": "https://localhost:3000/api",
     "sampleUrl": true
   },
